@@ -37,7 +37,7 @@ for dirpath, dirnames, filenames in os.walk(root_directory):
 #     print(file_path)
 
 todays_date = datetime.datetime.now().strftime("%Y-%m-%d")
-timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 
 
 
@@ -58,7 +58,7 @@ parts = [
 
 # Get today's date in the format YYYY-MM-DD
 start_parsing_marker = '<!-- #parsing: start here, remove everything below this line #deleteme  -->\n'
-start_generating_marker = '- [*] status' + ' \n ' + '- [x] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->' % timestamp_date
+start_generating_marker = '- [*] status' + ' \n ' + '- [x] done' + ' \n ' + '<!-- #generated: generated data starts here  -->'
 
 
 headers = []
@@ -117,10 +117,10 @@ for i, part in enumerate(parts):
         if start_line is not None:
             f.writelines(data[:start_line])
             f.seek(0, 2) # move to the end of the file
-            f.write('\n' + start_generating_marker + '\n' + contents_to_add + '\n' + start_parsing_marker)
+            f.write('\n' + start_generating_marker + '\n' + contents_to_add)
         else:
             f.seek(0, 2) # move to the end of the file
-            f.write(start_generating_marker + '\n' + contents_to_add)
+            f.write(start_generating_marker + '\n' + contents_to_add)            
         f.close()
 
     print("wrote to: " + part)
