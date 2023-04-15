@@ -21,6 +21,12 @@ PERIODICAL_NOTES_SCRIBBLE_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian
 
 # Read inputs from files
 # Open the scribble file
+
+# In case there exist more than one scribble per day
+
+# with open(f"{PERIODICAL_NOTES_SCRIBBLE_PATH}{todays_date}-scribble2.md", "r", encoding="utf-8") as f:
+    # contents = f.readlines()
+
 with open(f"{PERIODICAL_NOTES_SCRIBBLE_PATH}{todays_date}-scribble.md", "r", encoding="utf-8") as f:
     contents = f.readlines()
 

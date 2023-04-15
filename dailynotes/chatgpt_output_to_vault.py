@@ -51,6 +51,7 @@ parts = [
     "\\📝 Notes\\❗ Important Notes\\" + todays_date + "-important-notes",
     "\\📝 Notes\\⁉️📝Random Notes\\" + todays_date + "-random-notes",
     "\\📝 Notes\\✅ Lists\\" + todays_date + "-lists",
+    "\\🏆 Achievements\\" + todays_date + "-achievements",
     "\\🤓 Learnings\\" + todays_date + "-learnings",
     "\\👨‍🔬 Trackers\\" + todays_date + "-trackers",
     "\\🙋‍♂️ Data\\" + todays_date + "-data",
@@ -58,23 +59,24 @@ parts = [
 
 # Get today's date in the format YYYY-MM-DD
 start_parsing_marker = '<!-- #parsing: start here, remove everything below this line #deleteme  -->\n'
-start_generating_marker = '- [*] status' + ' \n ' + '- [x] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->' % timestamp_date
+start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
 
 headers = []
 
 parts_doc = [
-        "Outline ⚪", 
-        "Goals 🏃", 
-        "Ideas 💡", 
-        "Mental Health 🧠", 
-        "Logs ⌚", 
-        "Notes 🗒️", 
-        "Important Notes ❗", 
-        "Random Notes ⁉️📝", 
-        "Lists ✅", 
-        "Learnings 🤓", 
-        "Trackers 👨‍🔬", 
+        "Outline ⚪",
+        "Goals 🏃",
+        "Ideas 💡",
+        "Mental Health 🧠",
+        "Logs ⌚",
+        "Notes 🗒️",
+        "Important Notes ❗",
+        "Random Notes ⁉️📝",
+        "Lists ✅",
+        "Achievements 🏆",
+        "Learnings 🤓",
+        "Trackers 👨‍🔬",
         "Data 🙋‍♂️"
     ]
 
@@ -124,4 +126,3 @@ for i, part in enumerate(parts):
         f.close()
 
     print("wrote to: " + part)
-    

@@ -8,6 +8,7 @@ Template:
 # Important Notes ❗
 # Random Notes ⁉️📝
 # Lists ✅
+# Achievements 🏆
 # Learnings 🤓
 # Trackers 👨‍🔬
 # Data 🙋‍♂️
