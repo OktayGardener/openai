@@ -5,6 +5,7 @@
 import openai
 import os
 import datetime
+import sys
 
 # Before running the script, be sure to have written the Log in obsidian notes.
 # Otherwise this script won't run, the log won't exist.
@@ -58,6 +59,14 @@ response = openai.ChatCompletion.create(
 print(response)
 
 message = response.choices[0]['message']
+
+
+with open("markdown/achievements/chatgpt_dailynotes_log_to_achievements_output_%s.md" % todays_date, "w", encoding="utf-8") as f:
+    f.write(message['content'])
+
+
+
+sys.exit()
 
 PERIODICAL_NOTES_ACHIEVEMENTS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\😁 Periodical Notes Parts\\🏆 Achievements\\"
 
