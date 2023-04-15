@@ -6,8 +6,8 @@ import openai
 import os
 import datetime
 
-# Before running the script, be sure to have written the Scribble in obsidian notes.
-# Otherwise this script won't run, the scribble won't exist.
+# Before running the script, be sure to have written the Log in obsidian notes.
+# Otherwise this script won't run, the log won't exist.
 
 # Load OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -24,12 +24,9 @@ start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!--
 
 
 # Read inputs from files
-# Open the scribble file
+# Open the log file
 
-# In case there exist more than one scribble per day
-
-# with open(f"{PERIODICAL_NOTES_SCRIBBLE_PATH}{todays_date}-scribble2.md", "r", encoding="utf-8") as f:
-    # contents = f.readlines()
+# In case there exist more than one log per day
 
 with open(f"{PERIODICAL_NOTES_LOGS_PATH}{todays_date}-logs.md", "r", encoding="utf-8") as f:
     contents = f.readlines()
