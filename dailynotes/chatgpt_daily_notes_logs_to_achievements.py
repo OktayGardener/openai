@@ -20,7 +20,7 @@ todays_date = datetime.datetime.now().strftime("%Y-%m-%d")
 timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 PERIODICAL_NOTES_LOGS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\😁 Periodical Notes Parts\\⌚ Logs\\"
-start_parsing_marker = '<!-- #parsing: start here, remove everything below this line #deleteme  -->\n'
+start_parsing_marker = '<!-- #parsing: start here, read everything below this line #deleteme  -->\n'
 start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
 
@@ -33,7 +33,7 @@ with open(f"{PERIODICAL_NOTES_LOGS_PATH}{todays_date}-logs.md", "r", encoding="u
     contents = f.readlines()
 
 # Find the index of the line that starts the parsing section
-start_index = contents.index("<!-- #parsing: start here, remove everything below this line #deleteme  -->\n")
+start_index = contents.index("<!-- #parsing: start here, read everything below this line #deleteme  -->\n")
 
 # Instruction for the model defined in natural language
 with open(f"templates/chatgpt_dailynotes_instruction_log_to_achievements.md", "r", encoding="utf-8") as f:
@@ -63,10 +63,6 @@ message = response.choices[0]['message']
 
 with open("markdown/achievements/chatgpt_dailynotes_log_to_achievements_output_%s.md" % todays_date, "w", encoding="utf-8") as f:
     f.write(message['content'])
-
-
-
-sys.exit()
 
 PERIODICAL_NOTES_ACHIEVEMENTS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\😁 Periodical Notes Parts\\🏆 Achievements\\"
 

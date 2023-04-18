@@ -6,7 +6,7 @@ All lists should be outputted in this manner:
 Whenever the item is done, it should be outputted in this manner:
 - [x] item.
 
-Generate tags for each section and subsection and specify them as '🏷️ tags: #tag #anothertag #athirdtag' at the end of the section, for all sections and for each subsection. Generate tags even if it's empty.
+Generate tags for each subsection and specify them as '🏷️ tags: #tag #anothertag #athirdtag' at the end of the subsection, for all subsections. Generate tags even if it's empty.
 
 Example:
 Use the following log entry example to build correct output and use it as a template:
@@ -15,7 +15,7 @@ Use the following log entry example to build correct output and use it as a temp
 
 Output:
 # Achievements 🏆
-# Daily Songs on Spotify
+## Daily Songs on Spotify
 *From log entry:*
 `13:10am: created daily song playlist on Spotify`
 

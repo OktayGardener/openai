@@ -59,7 +59,7 @@ parts = [
 
 # Get today's date in the format YYYY-MM-DD
 start_parsing_marker = '<!-- #parsing: start here, remove everything below this line #deleteme  -->\n'
-start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
+start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n\n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
 
 headers = []
@@ -85,14 +85,14 @@ for i, part in enumerate(parts):
 # Read in the markdown file to parse
     # with open(f"{root_directory}{part}.md", "r", encoding='utf-8') as f:
     header_to_search = parts_doc[i]
-    
+
     contents_to_add = ''
     write_output = False
-    
+
     with open(f"markdown/chatgpt_dailynotes_output_{todays_date}.md", 'r', encoding='utf-8') as source_file:
         source_markdown = source_file.read()
 
-    # Find the start and end indices of the section to extract    
+    # Find the start and end indices of the section to extract
     start_index = find_section_start(header_to_search, source_markdown)
 
     end_index = len(source_markdown)
@@ -109,12 +109,12 @@ for i, part in enumerate(parts):
 
     with open(root_directory + part + '.md', encoding='utf-8') as f:
         data = f.readlines()
-    
+
     if start_parsing_marker in data:
         start_line = data.index(start_parsing_marker)
     else:
         start_line = None
-    
+
     with open(root_directory + part + '.md', 'w', encoding='utf-8') as f:
         if start_line is not None:
             f.writelines(data[:start_line])
