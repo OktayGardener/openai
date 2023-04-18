@@ -1,50 +1,38 @@
 import randomColor from 'randomcolor'
 import { Octokit } from "octokit";
 
-const tags = [
-  '#DD',
-  '#YYYY-MM-DD',
-  '#YYYY-MM',
-  '#YYYY/MM/DD',
-  '#YY/MM/DD',
-  '#YY/MM',
-  '#YYYY/MM'
-];
 
 const octokit = new Octokit({
   auth: process.env.OPENAI_REPO_OBSIDIAN,
 });
 
-const fullFormatColor = randomColor({
-  luminosity: 'bright'
-})
-const monthlyFormatColor = randomColor({
-  luminosity: 'bright'
-})
-const dailyFormatColor = randomColor({
-  luminosity: 'bright'
-})
-
 const currentDate = new Date();
 
-const formattedColors = {
-  // Evaluates to the current date's day of the month in two-digit format (e.g. "01", "02", etc.) mapped to dailyFormatColor
-  [currentDate.getDate().toString().padStart(2, '0')]: dailyFormatColor,
-  // Evaluates to the current date in ISO format (e.g. "2023-04-18") mapped to fullFormatColor
-  [currentDate.toISOString().slice(0, 10)]: fullFormatColor,
-  // Evaluates to the current date in format "YYYY-MM-DD" (e.g. "2023-04-18") mapped to fullFormatColor
-  [`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`]: fullFormatColor,
-  // Evaluates to the current date in format "YYYY-MM" (e.g. "2023-04") mapped to monthlyFormatColor
-  [`${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`]: monthlyFormatColor,
-  // Evaluates to the current date in format "YYYY/MM/DD" (e.g. "2023/04/18") mapped to fullFormatColor
-  [`${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`]: fullFormatColor,
-  // Evaluates to the current date in format "YY/MM/DD" (e.g. "23/04/18") mapped to dailyFormatColor
-  [`${currentDate.getFullYear().toString().substr(-2)}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`]: monthlyFormatColor,
-  // Evaluates to the current date in format "YYYY/MM" (e.g. "2023/04") mapped to monthlyFormatColor
-  [`${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`]: monthlyFormatColor,
-  // Evaluates to the current date in format "YY/MM" (e.g. "23/04") mapped to monthlyFormatColor
-  [`${currentDate.getFullYear().toString().substring(2)}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`]: monthlyFormatColor
+function ordinalSuffix(day) {
+  if (day % 10 == 1 && day != 11) {
+    return `${day}st`;
+  } else if (day % 10 == 2 && day != 12) {
+    return `${day}nd`;
+  } else if (day % 10 == 3 && day != 13) {
+    return `${day}rd`;
+  } else {
+    return `${day}th`;
+  }
+}
+
+const uniqueDateRepresentations = {
+  '#YYYY': `#${currentDate.getFullYear()}`,
+  '#YY': `#${currentDate.getFullYear().toString().substring(2)}`,
+  '#DD': `#${ordinalSuffix(currentDate.getDate())}`,
+  '#MonthName': `#${currentDate.toLocaleString('default', { month: 'long' })}`,
+  '#MM': `#${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`
 };
+
+const formattedColors = {};
+Object.entries(uniqueDateRepresentations).forEach(([key, value]) => {
+  const color = randomColor({ luminosity: 'bright' });
+  formattedColors[value] = color;
+});
 
 
 let css = '';
