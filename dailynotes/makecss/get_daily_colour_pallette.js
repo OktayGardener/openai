@@ -46,16 +46,26 @@ const formattedColors = {
 
 let css = '';
 let current_date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
-css += `/* New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
-Object.entries(formattedColors).forEach(([dateTag, color]) => {
-  css += `.tag[href^="${dateTag}"] {\n`;
-  css += `  background-color: ${color};\n`;
-  css += `  color: #ffffff;\n`;
-  css += `}\n`;
-});
-
 
 console.log(css);
+
+
 const cssFilePath = '.obsidian/snippets/tag-pills.css';
-fs.appendFileSync(cssFilePath, css);
-console.log('New tags have been added to tag-pills.css');
+const existingCss = fs.readFileSync(cssFilePath, 'utf8');
+const existingDateIndex = css.indexOf(`${current_date}:`);
+
+console.log("existingDateIndex: ${existingDateIndex}")
+
+if (existingDateIndex !== -1) {
+  console.log(`Tags for ${current_date} already exist in tag-pills.css. Skipping...`);
+} else {
+  css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
+  Object.entries(formattedColors).forEach(([dateTag, color]) => {
+    css += `.tag[href^="${dateTag}"] {\n`;
+    css += `  background-color: ${color};\n`;
+    css += `  color: #ffffff;\n`;
+    css += `}\n`;
+  });
+  fs.appendFileSync(cssFilePath, css);
+  console.log('${current_date}: New tags have been added to tag-pills.css for time: ${currentDate.toISOString().slice(0, 10)} ');
+}
