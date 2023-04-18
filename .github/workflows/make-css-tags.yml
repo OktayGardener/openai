@@ -15,7 +15,7 @@ jobs:
           repository: OktayGardener/obsidian-vaults
           ref: main
         env:
-          OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
+          GITHUB_TOKEN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.2
         with:
