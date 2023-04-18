@@ -56,9 +56,6 @@ const owner = "OktayGardener";
 const repo = "obsidian-vaults";
 const path = ".obsidian/snippets/tag-pills.css";
 
-console.log(octokit);
-console.log(octokit.repos);
-
 const result = await octokit.request('GET /repos/:owner/:repo/contents/:path', {
   owner: owner,
   repo: repo,
@@ -72,7 +69,7 @@ const searchString = `\\/${current_date}`;
 const foundEntry = content.split("\n").find(line => line.includes(searchString));
 
 
-if (foundEntry) {
+if (!foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
   Object.entries(formattedColors).forEach(([dateTag, color]) => {
     css += `.tag[href^="${dateTag}"] {\n`;
