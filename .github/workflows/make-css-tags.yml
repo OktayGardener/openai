@@ -9,25 +9,25 @@ jobs:
   generate-css:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          repository: OktayGardener/obsidian-vaults
-          ref: main
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: OktayGardener/obsidian-vaults
+        ref: main
         env:
           OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
-      - name: Setup Node.js
-        uses: actions/setup-node@v2.4.6
-        with:
-          node-version: '14'
-      - name: Install dependencies
-        run: npm install randomcolor
-      - name: Generate CSS Tags for Obsidian Notes
-        run: node OktayGardener/openai/dailynotes/makecss/get_daily_colour_pallette.js
-      - name: Commit changes
-        run: |
-          git config --global user.name 'Github Actions'
-          git config --global user.email '<>'
-          git add .obsidian/snippets/tag-pills.css
-          git commit -m "Update tag-pills.css with new colors for date: $(date +%Y-%m-%d)"
-          git push
+    - name: Setup Node.js
+      uses: actions/setup-node@v2.5.2
+      with:
+        node-version: '14'
+    - name: Install dependencies
+      run: npm install randomcolor
+    - name: Generate CSS Tags for Obsidian Notes
+      run: node OktayGardener/openai/dailynotes/makecss/get_daily_colour_pallette.js
+    - name: Commit changes
+      run: |
+        git config --global user.name 'Github Actions'
+        git config --global user.email '<>'
+        git add .obsidian/snippets/tag-pills.css
+        git commit -m "Update tag-pills.css with new colors for date: $(date +%Y-%m-%d)"
+        git push
