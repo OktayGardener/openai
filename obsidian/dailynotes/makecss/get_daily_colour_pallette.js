@@ -52,11 +52,12 @@ let current_date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).
 
 console.log("Todays date: ${current_date}.")
 
-const cssFilePath = '.obsidian/snippets/tag-pills.css';
-
 const owner = "OktayGardener";
 const repo = "obsidian-vaults";
 const path = ".obsidian/snippets/tag-pills.css";
+
+console.log(octokit);
+console.log(octokit.repos);
 
 const result = await octokit.repos.getContent({
   owner: owner,
