@@ -79,6 +79,8 @@ const foundEntry = decodedContent.split('\n').find(line => line.includes(searchS
 console.log(searchString)
 console.log(foundEntry)
 
+// If entry not found, add new tags to CSS file// ... (previous code remains the same)
+
 // If entry not found, add new tags to CSS file
 if (!foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
@@ -91,13 +93,16 @@ if (!foundEntry) {
 
   console.log(`Entering following css: \n\n${css}`);
 
+  // Append the new CSS to the existing content
+  const updatedContent = decodedContent + css;
+
   // Update file content
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
     path,
     message: `Update tag-pills.css with new colors for date: ${current_date}`,
-    content: Buffer.from(css).toString('base64'),
+    content: Buffer.from(updatedContent).toString('base64'), // Replace 'css' with 'updatedContent'
     sha: data.sha
   });
 
