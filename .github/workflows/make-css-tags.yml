@@ -9,13 +9,6 @@ jobs:
   generate-css:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          repository: OktayGardener/obsidian-vaults
-          ref: main
-        env:
-          GITHUB_TOKEN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.2
         with:
@@ -23,6 +16,8 @@ jobs:
       - name: Install dependencies
         run: npm install randomcolor
       - name: Generate CSS Tags for Obsidian Notes
+        env:
+          OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
         run: node OktayGardener/openai/dailynotes/makecss/get_daily_colour_pallette.js
       - name: Commit changes
         run: |
