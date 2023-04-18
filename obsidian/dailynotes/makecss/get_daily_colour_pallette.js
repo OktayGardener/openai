@@ -68,10 +68,10 @@ const content = Buffer.from(result.data.content, "base64").toString("utf8");
 
 const searchString = new RegExp(`\\/${current_date}[^\n]*`);
 
-const result = content.split("\n").find(line => line.includes(searchString));
+const foundEntry = content.split("\n").find(line => line.includes(searchString));
 
 
-if (result) {
+if (foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
   Object.entries(formattedColors).forEach(([dateTag, color]) => {
     css += `.tag[href^="${dateTag}"] {\n`;
