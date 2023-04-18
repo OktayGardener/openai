@@ -85,7 +85,7 @@ console.log(foundEntry)
 if (!foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
   Object.entries(formattedColors).forEach(([dateTag, color]) => {
-    css += `.tag[href^="#${dateTag}"] {\n`;
+    css += `.tag[href^="${dateTag}"] {\n`;
     css += `  background-color: ${color};\n`;
     css += `  color: #ffffff;\n`;
     css += `}\n`;
