@@ -83,7 +83,7 @@ if (!foundEntry) {
   console.log("Entering following css: \n\n")
   console.log(css);
 
-  const { data } = await octokit.repos.getContent({
+  const result = await octokit.rest.repos.getContent({
     owner,
     repo,
     path
@@ -91,13 +91,13 @@ if (!foundEntry) {
 
   const encodedContent = Buffer.from(css).toString("base64");
 
-  await octokit.repos.createOrUpdateFileContents({
+  await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
     path,
     message: "Update file with new content",
     content: encodedContent,
-    sha: data.sha,
+    sha: result.data.sha,
   });
   console.log('${current_date}: New tags have been added to tag-pills.css for time: ${currentDate.toISOString().slice(0, 10)} ');
 } else {
