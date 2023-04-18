@@ -67,7 +67,7 @@ const result = await octokit.request('GET /repos/:owner/:repo/contents/:path', {
 
 const content = Buffer.from(result.data.content, "base64").toString("utf8");
 
-const searchString = new RegExp(`\\/${current_date}[^\n]*`);
+const searchString = `\\/${current_date}`;
 
 const foundEntry = content.split("\n").find(line => line.includes(searchString));
 
