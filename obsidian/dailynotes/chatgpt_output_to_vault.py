@@ -27,7 +27,6 @@ todays_date = datetime.datetime.now().strftime("%Y-%m-%d")
 timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
-
 parts = [
     "\\Outline\\" + todays_date + "-outline",
     "\\Goals\\" + todays_date + "-goals",
@@ -46,8 +45,10 @@ parts = [
 
 # Get today's date in the format YYYY-MM-DD
 start_parsing_marker = '<!-- #parsing: start here, remove everything below this line #deleteme  -->\n'
-start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n\n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
+def generate_marker(part):
+    generated_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return '- [*] status' + ' \n' + '- [/] %s entered ⏫' % part + ' \n\n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % generated_at
 
 headers = []
 
@@ -106,10 +107,10 @@ for i, part in enumerate(parts):
         if start_line is not None:
             f.writelines(data[:start_line])
             f.seek(0, 2) # move to the end of the file
-            f.write('\n' + start_generating_marker + '\n' + contents_to_add + '\n' + start_parsing_marker)
+            f.write('\n' + generate_marker(part) + '\n' + contents_to_add + '\n' + start_parsing_marker)
         else:
             f.seek(0, 2) # move to the end of the file
-            f.write(start_generating_marker + '\n' + contents_to_add)
+            f.write(generate_marker(part) + '\n' + contents_to_add)
         f.close()
 
     print("wrote to: " + part)
