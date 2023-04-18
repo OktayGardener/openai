@@ -59,7 +59,7 @@ const path = ".obsidian/snippets/tag-pills.css";
 console.log(octokit);
 console.log(octokit.repos);
 
-const result = await octokit.repos.getContent({
+const result = await octokit.request('GET /repos/:owner/:repo/contents/:path', {
   owner: owner,
   repo: repo,
   path: path,
