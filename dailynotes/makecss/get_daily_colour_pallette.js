@@ -1,5 +1,5 @@
-import fs from 'fs';
 import randomColor from 'randomcolor'
+import { Octokit } from "octokit";
 
 const tags = [
   '#DD',
@@ -11,6 +11,9 @@ const tags = [
   '#YYYY/MM'
 ];
 
+const octokit = new Octokit({
+  auth: process.env.OPENAI_REPO_OBSIDIAN,
+});
 
 const fullFormatColor = randomColor({
   luminosity: 'bright'
@@ -47,18 +50,28 @@ const formattedColors = {
 let css = '';
 let current_date = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
 
-console.log(css);
-
+console.log("Todays date: ${current_date}.")
 
 const cssFilePath = '.obsidian/snippets/tag-pills.css';
-const existingCss = fs.readFileSync(cssFilePath, 'utf8');
-const existingDateIndex = css.indexOf(`${current_date}:`);
 
-console.log("existingDateIndex: ${existingDateIndex}")
+const owner = "OktayGardener";
+const repo = "obsidian-vaults";
+const path = ".obsidian/snippets/tag-pills.css";
 
-if (existingDateIndex !== -1) {
-  console.log(`Tags for ${current_date} already exist in tag-pills.css. Skipping...`);
-} else {
+const result = await octokit.repos.getContent({
+  owner: owner,
+  repo: repo,
+  path: path,
+});
+
+const content = Buffer.from(result.data.content, "base64").toString("utf8");
+
+const searchString = new RegExp(`\\/${current_date}[^\n]*`);
+
+const result = content.split("\n").find(line => line.includes(searchString));
+
+
+if (result) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
   Object.entries(formattedColors).forEach(([dateTag, color]) => {
     css += `.tag[href^="${dateTag}"] {\n`;
@@ -66,6 +79,27 @@ if (existingDateIndex !== -1) {
     css += `  color: #ffffff;\n`;
     css += `}\n`;
   });
-  fs.appendFileSync(cssFilePath, css);
+
+  console.log("Entering following css: \n\n")
+  console.log(css);
+
+  const { data } = await octokit.repos.getContent({
+    owner,
+    repo,
+    path
+  });
+
+  const encodedContent = Buffer.from(css).toString("base64");
+
+  await octokit.repos.createOrUpdateFileContents({
+    owner,
+    repo,
+    path,
+    message: "Update file with new content",
+    content: encodedContent,
+    sha: data.sha,
+  });
   console.log('${current_date}: New tags have been added to tag-pills.css for time: ${currentDate.toISOString().slice(0, 10)} ');
+} else {
+  console.log(`Entry found for ${current_date}. \n Tags for ${current_date} already exist in tag-pills.css. Skipping...`);
 }
