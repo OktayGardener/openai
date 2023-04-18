@@ -22,7 +22,7 @@ jobs:
       - name: Generate CSS Tags for Obsidian Notes
         env:
           OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
-        run: node OktayGardener/openai/obsidian/dailynotes/makecss/get_daily_colour_pallette.js
+          run: node obsidian/dailynotes/makecss/get_daily_colour_pallette.js
       - name: Commit changes
         run: |
           git config --global user.name 'Github Actions'
