@@ -3,7 +3,7 @@ import sys
 import os
 import re
 
-root_directory = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\😁 Periodical Notes Parts"
+root_directory = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\Periodical Notes Parts"
 directories = []
 
 def find_section_start(header_to_search, source_markdown):
