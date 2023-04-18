@@ -68,6 +68,8 @@ const searchString = `\\/${current_date}`;
 
 const foundEntry = content.split("\n").find(line => line.includes(searchString));
 
+console.log(searchString)
+console.log(foundEntry)
 
 if (!foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
