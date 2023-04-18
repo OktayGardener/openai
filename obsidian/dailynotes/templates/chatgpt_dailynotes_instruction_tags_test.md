@@ -11,5 +11,3 @@ Generate tags, for each section and specify them as '🏷️ tags: #tag #another
 Generate tags at the end of each sentence, at each part and section, and for all sections.
 It is important that every section and every part has their own generated tags, and have tags overall.
 Output should consist of complete sentences ending with tags, #tags.
-
-For example, from one single senctence: "Today I think I got my first mania. I'm just like my mom. Call her." a generated answer could look like the following:
