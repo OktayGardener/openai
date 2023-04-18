@@ -42,19 +42,19 @@ timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
 parts = [
-    "\\⚪ Outline\\" + todays_date + "-outline",
-    "\\🏃 Goals\\" + todays_date + "-goals",
-    "\\💡 Ideas\\" + todays_date + "-ideas",
-    "\\🧠 Mental Health\\" + todays_date + "-mental-health",
-    "\\⌚ Logs\\" + todays_date + "-logs",
-    "\\📝 Notes\\🗒️ Regular Notes\\" + todays_date + "-notes",
-    "\\📝 Notes\\❗ Important Notes\\" + todays_date + "-important-notes",
-    "\\📝 Notes\\⁉️📝Random Notes\\" + todays_date + "-random-notes",
-    "\\📝 Notes\\✅ Lists\\" + todays_date + "-lists",
-    "\\🏆 Achievements\\" + todays_date + "-achievements",
-    "\\🤓 Learnings\\" + todays_date + "-learnings",
-    "\\👨‍🔬 Trackers\\" + todays_date + "-trackers",
-    "\\🙋‍♂️ Data\\" + todays_date + "-data",
+    "\\Outline\\" + todays_date + "-outline",
+    "\\Goals\\" + todays_date + "-goals",
+    "\\Ideas\\" + todays_date + "-ideas",
+    "\\Mental Health\\" + todays_date + "-mental-health",
+    "\\Logs\\" + todays_date + "-logs",
+    "\\Notes\\Regular Notes\\" + todays_date + "-notes",
+    "\\Notes\\Important Notes\\" + todays_date + "-important-notes",
+    "\\Notes\\Random Notes\\" + todays_date + "-random-notes",
+    "\\Notes\\Lists\\" + todays_date + "-lists",
+    "\\Achievements\\" + todays_date + "-achievements",
+    "\\Learnings\\" + todays_date + "-learnings",
+    "\\Trackers\\" + todays_date + "-trackers",
+    "\\Data\\" + todays_date + "-data",
 ]
 
 # Get today's date in the format YYYY-MM-DD

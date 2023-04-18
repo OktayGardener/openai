@@ -1,5 +1,5 @@
 # This script is for finding the location of Today's Scribble
-# Given NL Instruction + a template, outputs: 
+# Given NL Instruction + a template, outputs:
 # Generated, formatted, tranformed and classified new markdown document.
 
 import openai
@@ -47,7 +47,7 @@ instruction_contents = "".join(instruction_contents)
 final_contents = "".join([instruction_contents] + ['\n'] + [contents])
 
 
-model_engine = "gpt-3.5-turbo" 
+model_engine = "gpt-3.5-turbo"
 # This specifies which GPT model to use, as there are several models available, each with different capabilities and performance characteristics.
 
 response = openai.ChatCompletion.create(
@@ -64,7 +64,7 @@ message = response.choices[0]['message']
 with open("markdown/achievements/chatgpt_dailynotes_log_to_achievements_output_%s.md" % todays_date, "w", encoding="utf-8") as f:
     f.write(message['content'])
 
-PERIODICAL_NOTES_ACHIEVEMENTS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\😁 Periodical Notes Parts\\🏆 Achievements\\"
+PERIODICAL_NOTES_ACHIEVEMENTS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\Periodical Notes Parts\\Achievements\\"
 
 with open(f"{PERIODICAL_NOTES_ACHIEVEMENTS_PATH}{todays_date}-achievements.md", encoding='utf-8') as f:
     data = f.readlines()

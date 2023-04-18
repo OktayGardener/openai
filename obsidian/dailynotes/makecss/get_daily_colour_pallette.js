@@ -1,12 +1,102 @@
 import randomColor from 'randomcolor'
 import { Octokit } from "octokit";
-
+import chroma from 'chroma-js';
+import fs from 'fs'
 
 const octokit = new Octokit({
   auth: process.env.OPENAI_REPO_OBSIDIAN,
 });
 
-const currentDate = new Date();
+
+let colorPalette = [];
+
+function generateColorPalette() {
+  const fs = require('fs');
+  const hexValues = fs.readFileSync('colors.txt', 'utf8').trim().split('\n').map(line => line.trim().split('#').slice(1));
+  const numColors = Object.keys(uniqueDateRepresentations).length;
+  colorPalette = [];
+  for (let i = 0; i < Math.ceil(numColors / hexValues.length); i++) {
+    colorPalette.push(...hexValues.flat());
+  }
+  colorPalette.length = numColors;
+}
+
+function getTagColor(tag, currentDate) {
+  const paletteDuration = tag.includes('DD') ? 'day' : tag.includes('WW') ? 'week' : tag.includes('MMMM YY') ? 'month' : tag.includes('YYYY') ? 'year' : 'unknown';
+  let durationStart;
+  switch (paletteDuration) {
+    case 'day':
+      durationStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+      break;
+    case 'week':
+      durationStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - currentDate.getDay());
+      break;
+    case 'month':
+      durationStart = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+      break;
+    case 'year':
+      durationStart = new Date(currentDate.getFullYear(), 0, 1);
+      break;
+    default:
+      return 'white'; // return default color for unknown duration
+  }
+  if (durationStart.getTime() !== colorPalette.start.getTime()) {
+    generateColorPalette();
+    colorPalette.start = durationStart;
+  }
+  let colorIndex;
+  switch (paletteDuration) {
+    case 'day':
+      colorIndex = currentDate.getDate() - 1;
+      break;
+    case 'week':
+      colorIndex = Math.ceil((currentDate.getDate() + (currentDate.getMonth() + 1) * 7) / 7) - 1;
+      break;
+    case 'month':
+      colorIndex = currentDate.getMonth();
+      break;
+    case 'year':
+      colorIndex = 0;
+      break;
+    default:
+      return 'white'; // return default color for unknown duration
+  }
+  colorIndex += tag.charCodeAt(1);
+  return colorPalette[colorIndex % colorPalette.length];
+}
+
+function generateTagColors() {
+  const currentDate = new Date();
+  colorPalette.start = colorPalette.start || new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()); // initialize start date if not set
+  const css = [];
+
+  for (const tag in uniqueDateRepresentations) {
+    const color = getTagColor(tag, currentDate);
+    css.push(`${tag} { background-color: ${color}; color: white; }`);
+  }
+
+  const styleElement = document.createElement('style');
+  styleElement.textContent = css.join('\n');
+  document.head.appendChild(styleElement);
+}
+
+generateColorPalette();
+generateTagColors();
+
+
+
+// const paletteFile = './color_pallettes_handmade_chatgpt_colorhunt.txt';
+// const currentDate = new Date();
+
+// // Read color palettes from file
+// const colorPalettesFile = fs.readFileSync('color_pallettes_handmade_chatgpt_colorhunt.txt', 'utf8');
+// const colorPalettes = colorPalettesFile.trim().split('\n').map(line => line.split('#').filter(Boolean));
+// // Randomly select a color palette
+// const colorPalette = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
+
+// // 1: Using chroma.js library to generate gradient colors
+// const gradient = chroma.scale(colorPalette).mode('lab').colors(Object.keys(uniqueDateRepresentations).length);
+
 
 function ordinalSuffix(day) {
   if (day % 10 == 1 && day != 11) {
@@ -25,12 +115,60 @@ const uniqueDateRepresentations = {
   '#YY': `#${currentDate.getFullYear().toString().substring(2)}`,
   '#DD': `#${ordinalSuffix(currentDate.getDate())}`,
   '#MonthName': `#${currentDate.toLocaleString('default', { month: 'long' })}`,
-  '#MM': `#${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`
+  '#MM': `#${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`,
+  '#Quarter': `#${Math.floor((currentDate.getMonth() + 3) / 3)}Q${currentDate.getFullYear().toString().substring(2)}`,
+  '#WW': `#${Math.ceil((currentDate.getDate() + (currentDate.getMonth() + 1) * 7) / 7)}`,
+  '#YYYY/MM': `#${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`,
+  '#YYYY-MM': `#${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`,
+  '#YYYY-MM-DD': `#${currentDate.toISOString().slice(0, 10)}`,
+  '#MonthYY': `#${currentDate.toLocaleString('default', { month: 'short' })} ${currentDate.getFullYear().toString().substring(2)}`,
+  '#MonthNameYY': `#${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear().toString().substring(2)}`,
+  '#WeekYY': `#Week ${Math.ceil((currentDate.getDate() + (currentDate.getMonth() + 1) * 7) / 7)} ${currentDate.getFullYear().toString().substring(2)}`,
+  '#YYYY/MM/DD': `#${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`
 };
 
+function generateTagValues(startDate, endDate) {
+  const tagValues = [];
+
+  let currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    const tagValue = {};
+    for (const tag in uniqueDateRepresentations) {
+      const value = uniqueDateRepresentations[tag]
+        .replace('#YYYY', currentDate.getFullYear())
+        .replace('#YY', currentDate.getFullYear().toString().substring(2))
+        .replace('#DD', ordinalSuffix(currentDate.getDate()))
+        .replace('#MonthName', currentDate.toLocaleString('default', { month: 'long' }))
+        .replace('#MM', (currentDate.getMonth() + 1).toString().padStart(2, '0'))
+        .replace('#Quarter', `${Math.floor((currentDate.getMonth() + 3) / 3)}Q${currentDate.getFullYear().toString().substring(2)}`)
+        .replace('#WW', Math.ceil((currentDate.getDate() + (currentDate.getMonth() + 1) * 7) / 7))
+        .replace('#YYYY/MM', `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`)
+        .replace('#YYYY-MM', `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}`)
+        .replace('#YYYY-MM-DD', currentDate.toISOString().slice(0, 10))
+        .replace('#MonthYY', `${currentDate.toLocaleString('default', { month: 'short' })} ${currentDate.getFullYear().toString().substring(2)}`)
+        .replace('#MonthNameYY', `${currentDate.toLocaleString('default', { month: 'long' })} ${currentDate.getFullYear().toString().substring(2)}`)
+        .replace('#WeekYY', `Week ${Math.ceil((currentDate.getDate() + (currentDate.getMonth() + 1) * 7) / 7)} ${currentDate.getFullYear().toString().substring(2)}`)
+        .replace('#YYYY/MM/DD', `${currentDate.getFullYear()}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getDate().toString().padStart(2, '0')}`);
+      tagValue[tag] = value;
+    }
+    tagValues.push(tagValue);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return tagValues;
+}
+
+
+// const formattedColors = {};
+// Object.entries(uniqueDateRepresentations).forEach(([key, value]) => {
+//   const color = randomColor({ luminosity: 'bright' });
+//   formattedColors[value] = color;
+// });
+
+
 const formattedColors = {};
-Object.entries(uniqueDateRepresentations).forEach(([key, value]) => {
-  const color = randomColor({ luminosity: 'bright' });
+Object.entries(uniqueDateRepresentations).forEach(([key, value], index) => {
+  const color = index < colorPalette.length ? colorPalette[index] : chroma.random().hex();
   formattedColors[value] = color;
 });
 
