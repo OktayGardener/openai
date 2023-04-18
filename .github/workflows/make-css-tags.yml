@@ -23,10 +23,3 @@ jobs:
         env:
           OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
         run: node obsidian/dailynotes/makecss/get_daily_colour_pallette.js
-      - name: Commit changes
-        run: |
-          git config --global user.name 'Github Actions'
-          git config --global user.email '<>'
-          git add .obsidian/snippets/tag-pills.css
-          git commit -m "Update tag-pills.css with new colors for date: $(date +%Y-%m-%d)"
-          git push
