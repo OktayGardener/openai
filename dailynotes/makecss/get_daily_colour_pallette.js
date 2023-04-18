@@ -1,3 +1,4 @@
+import fs from 'fs';
 import randomColor from 'randomcolor'
 
 const tags = [
@@ -55,4 +56,6 @@ Object.entries(formattedColors).forEach(([dateTag, color]) => {
 
 
 console.log(css);
+const cssFilePath = '.obsidian/snippets/tag-pills.css';
+fs.appendFileSync(cssFilePath, css);
 console.log('New tags have been added to tag-pills.css');
