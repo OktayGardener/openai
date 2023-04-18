@@ -62,15 +62,24 @@ const result = await octokit.request('GET /repos/:owner/:repo/contents/:path', {
   path: path,
 });
 
-const content = Buffer.from(result.data.content, "base64").toString("utf8");
+// Read file content
+const { data } = await octokit.rest.repos.getContent({
+  owner,
+  repo,
+  path
+});
 
+// Decode file content
+const decodedContent = Buffer.from(data.content, 'base64').toString();
+
+// Check if entry exists for current date
 const searchString = `\\/${current_date}`;
-
-const foundEntry = content.split("\n").find(line => line.includes(searchString));
+const foundEntry = decodedContent.split('\n').find(line => line.includes(searchString));
 
 console.log(searchString)
 console.log(foundEntry)
 
+// If entry not found, add new tags to CSS file
 if (!foundEntry) {
   css += `/*${current_date}: New tags for date: ${current_date} added by Github Action process pipeline. Time: ${currentDate.toISOString().slice(0, 10)} */ \n\n`;
   Object.entries(formattedColors).forEach(([dateTag, color]) => {
@@ -80,26 +89,19 @@ if (!foundEntry) {
     css += `}\n`;
   });
 
-  console.log("Entering following css: \n\n")
-  console.log(css);
+  console.log(`Entering following css: \n\n${css}`);
 
-  const result = await octokit.rest.repos.getContent({
-    owner,
-    repo,
-    path
-  });
-
-  const encodedContent = Buffer.from(css).toString("base64");
-
+  // Update file content
   await octokit.rest.repos.createOrUpdateFileContents({
     owner,
     repo,
     path,
-    message: "Update file with new content",
-    content: encodedContent,
-    sha: result.data.sha,
+    message: `Update tag-pills.css with new colors for date: ${current_date}`,
+    content: Buffer.from(css).toString('base64'),
+    sha: data.sha
   });
-  console.log('${current_date}: New tags have been added to tag-pills.css for time: ${currentDate.toISOString().slice(0, 10)} ');
+
+  console.log(`${current_date}: New tags have been added to tag-pills.css for time: ${currentDate.toISOString().slice(0, 10)} `);
 } else {
-  console.log(`Entry found for ${current_date}. \n Tags for ${current_date} already exist in tag-pills.css. Skipping...`);
+  console.log(`Entry found for ${current_date}. \nTags for ${current_date} already exist in tag-pills.css. Skipping...`);
 }
