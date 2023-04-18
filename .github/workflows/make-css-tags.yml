@@ -14,7 +14,9 @@ jobs:
         with:
           node-version: '14'
       - name: Install dependencies
-        run: npm install randomcolor
+        run: |
+          npm install randomcolor
+          npm install octokit
       - name: Generate CSS Tags for Obsidian Notes
         env:
           OPENAI_REPO_OBSIDIAN: ${{ secrets.OPENAI_REPO_OBSIDIAN }}
