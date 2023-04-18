@@ -17,7 +17,7 @@ start_parsing_marker = '<!-- #parsing: start here, remove everything below this 
 start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
 
-with open("markdown/achievements/chatgpt_dailynotes_log_to_achievements_output_%s.md" % todays_date, 'r', encoding='utf-8') as source_file:
+with open("obsidian/dailynotes/markdown/achievements/chatgpt_dailynotes_log_to_achievements_output_%s.md" % todays_date, 'r', encoding='utf-8') as source_file:
     source_markdown = source_file.read()
 
 

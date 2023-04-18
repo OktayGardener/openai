@@ -3,7 +3,7 @@ import sys
 import os
 import re
 
-root_directory = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\Periodical Notes Parts"
+root_directory = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\04 Periodical Notes Parts"
 directories = []
 
 def find_section_start(header_to_search, source_markdown):
@@ -17,24 +17,11 @@ def find_section_start(header_to_search, source_markdown):
         return match.end()
     else:
         return None
-
 # Get all directories under root_directory
 for dirpath, dirnames, filenames in os.walk(root_directory):
     for dirname in dirnames:
         # Append the directory path to the list
         directories.append(os.path.join(dirpath, dirname))
-
-# Get all dirs 💾
-# for dir_name in os.listdir(root_directory):
-#     if os.path.isdir(os.path.join(root_directory, dir_name)):
-#         # get the name of the file with the same name as the directory
-#         file_name = os.path.join(root_directory, dir_name, dir_name[2:].lower() + ".md")
-#         print(file_name)
-#         if os.path.isfile(file_name):
-#             print(file_name)
-# # Print the matching files
-# for file_path in matching_files:
-#     print(file_path)
 
 todays_date = datetime.datetime.now().strftime("%Y-%m-%d")
 timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -65,19 +52,19 @@ start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n\n ' + '<!
 headers = []
 
 parts_doc = [
-        "Outline ⚪",
-        "Goals 🏃",
-        "Ideas 💡",
-        "Mental Health 🧠",
-        "Logs ⌚",
-        "Notes 🗒️",
-        "Important Notes ❗",
-        "Random Notes ⁉️📝",
-        "Lists ✅",
-        "Achievements 🏆",
-        "Learnings 🤓",
-        "Trackers 👨‍🔬",
-        "Data 🙋‍♂️"
+        "Outline",
+        "Goals",
+        "Ideas",
+        "Mental Health",
+        "Logs",
+        "Notes",
+        "Important Notes",
+        "Random Notes",
+        "Lists",
+        "Achievements",
+        "Learnings",
+        "Trackers",
+        "Data"
     ]
 
 
@@ -89,7 +76,7 @@ for i, part in enumerate(parts):
     contents_to_add = ''
     write_output = False
 
-    with open(f"markdown/chatgpt_dailynotes_output_{todays_date}.md", 'r', encoding='utf-8') as source_file:
+    with open(f"obsidian/dailynotes/markdown/chatgpt_dailynotes_output_{todays_date}.md", 'r', encoding='utf-8') as source_file:
         source_markdown = source_file.read()
 
     # Find the start and end indices of the section to extract

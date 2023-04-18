@@ -13,7 +13,7 @@ Here are some examples of obsidian tasks,
 
 Please take the text, find tasks, and transform them into obsidian tasks, with the same format as the example. Take the role of an assistant and do your best to plan due dates for all tasks.
 
-On top of that, generate tags for each subsection and section, with an accompanying emoji, and specify them as '🏷️ tags: #tag😁 #anothertag✅ #athirdtag📃' at the end of the subsection/section, for all sections. Generate tags even if it's an empty area.
+On top of that, generate tags for each subsection and section, with an accompanying emoji, and specify them as '🏷️ tags: #tag😁 #anothertag✅ #athirdtag📃' at the end of the subsection, for all sections. Generate tags even if it's an empty area.
 
 Text:
 

@@ -19,7 +19,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 todays_date = datetime.datetime.now().strftime("%Y-%m-%d")
 timestamp_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-PERIODICAL_NOTES_LOGS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\Periodical Notes Parts\\Logs\\"
+PERIODICAL_NOTES_LOGS_PATH = "C:\\Users\\oktay\\OneDrive\\Dokument\\Obsidian Vaults\\04 Periodical Notes Parts\\Logs\\"
 start_parsing_marker = '<!-- #parsing: start here, read everything below this line #deleteme  -->\n'
 start_generating_marker = '- [*] status' + ' \n' + '- [/] done' + ' \n ' + '<!-- #generated: generated data starts here, generated at: %s -->\n' % timestamp_date
 
