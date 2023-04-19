@@ -57,15 +57,12 @@ parts_doc = [
         "Goals",
         "Ideas",
         "Mental Health",
-        "Logs",
         "Notes",
         "Important Notes",
         "Random Notes",
         "Lists",
         "Achievements",
         "Learnings",
-        "Trackers",
-        "Data"
     ]
 
 
@@ -94,7 +91,6 @@ for i, part in enumerate(parts):
     print("trynna open: %s" % root_directory + part)
 
     # Write to periodical notes parts file
-
     with open(root_directory + part + '.md', encoding='utf-8') as f:
         data = f.readlines()
 

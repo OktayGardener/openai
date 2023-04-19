@@ -85,3 +85,25 @@ with open(f"{PERIODICAL_NOTES_ACHIEVEMENTS_PATH}{todays_date}-achievements.md", 
     f.close()
 
 print("wrote to: " + "{PERIODICAL_NOTES_ACHIEVEMENTS_PATH}{todays_date}-achievements.md")
+
+import re
+
+# read the markdown document
+with open('document.md', 'r') as f:
+    markdown_text = f.read()
+
+# define the section heading to search for
+section_heading = '## Goals'
+
+# search for the section heading using regular expressions
+match = re.search(fr'(?<=\n{section_heading}\n)(.*)(?=\n#+ )', markdown_text, re.DOTALL)
+
+if match:
+    # append the text to the end of the section
+    section_text = match.group(1)
+    new_text = section_text + '\n- [ ] New goal 🔼 📅 2023-04-30\n'
+    markdown_text = re.sub(fr'(?<=\n{section_heading}\n)(.*)(?=\n#+ )', new_text, markdown_text, flags=re.DOTALL)
+
+# write the modified markdown document back to file
+with open('document.md', 'w') as f:
+    f.write(markdown_text)
